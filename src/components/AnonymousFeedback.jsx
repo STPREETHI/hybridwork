@@ -6,25 +6,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
-interface FeedbackItem {
-  id: string;
-  message: string;
-  category: "suggestion" | "concern" | "praise";
-  timestamp: Date;
-  status: "new" | "reviewed" | "addressed";
-}
+// FeedbackItem structure: id, message, category, timestamp, status
+// AnonymousFeedbackProps: userRole
 
-interface AnonymousFeedbackProps {
-  userRole: "worker" | "hr" | "manager";
-}
-
-const AnonymousFeedback = ({ userRole }: AnonymousFeedbackProps) => {
+const AnonymousFeedback = ({ userRole }) => {
   const [newFeedback, setNewFeedback] = useState("");
-  const [category, setCategory] = useState<"suggestion" | "concern" | "praise">("suggestion");
+  const [category, setCategory] = useState("suggestion");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const [feedbackItems] = useState<FeedbackItem[]>([
+  const [feedbackItems] = useState([
     {
       id: "1",
       message: "The coffee machine in the office needs to be refilled more frequently. It's often empty by noon.",
@@ -64,7 +55,7 @@ const AnonymousFeedback = ({ userRole }: AnonymousFeedbackProps) => {
     }, 1000);
   };
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryColor = (category) => {
     switch (category) {
       case "suggestion":
         return "bg-primary/10 text-primary border-primary/20";
@@ -77,7 +68,7 @@ const AnonymousFeedback = ({ userRole }: AnonymousFeedbackProps) => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status) => {
     switch (status) {
       case "new":
         return <AlertCircle className="w-4 h-4 text-warning" />;
@@ -90,7 +81,7 @@ const AnonymousFeedback = ({ userRole }: AnonymousFeedbackProps) => {
     }
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date) => {
     return date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric',
@@ -115,7 +106,7 @@ const AnonymousFeedback = ({ userRole }: AnonymousFeedbackProps) => {
           </div>
           
           <div className="flex gap-2">
-            {(["suggestion", "concern", "praise"] as const).map((cat) => (
+            {["suggestion", "concern", "praise"].map((cat) => (
               <Button
                 key={cat}
                 variant={category === cat ? "default" : "outline"}

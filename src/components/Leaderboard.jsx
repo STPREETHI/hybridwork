@@ -3,22 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
-interface LeaderboardEntry {
-  id: string;
-  name: string;
-  department: string;
-  officeAttendance: number;
-  streak: number;
-  avatar: string;
-  rank: number;
-}
+// LeaderboardEntry structure: id, name, department, officeAttendance, streak, avatar, rank
+// LeaderboardProps: userRole
 
-interface LeaderboardProps {
-  userRole: "worker" | "hr" | "manager";
-}
-
-const Leaderboard = ({ userRole }: LeaderboardProps) => {
-  const leaderboardData: LeaderboardEntry[] = [
+const Leaderboard = ({ userRole }) => {
+  const leaderboardData = [
     {
       id: "1",
       name: "Alex Chen",
@@ -66,7 +55,7 @@ const Leaderboard = ({ userRole }: LeaderboardProps) => {
     }
   ];
 
-  const getRankBadge = (rank: number) => {
+  const getRankBadge = (rank) => {
     switch (rank) {
       case 1:
         return (
@@ -86,7 +75,7 @@ const Leaderboard = ({ userRole }: LeaderboardProps) => {
     }
   };
 
-  const getAttendanceColor = (percentage: number) => {
+  const getAttendanceColor = (percentage) => {
     if (percentage >= 90) return "text-success";
     if (percentage >= 75) return "text-primary";
     if (percentage >= 60) return "text-warning";

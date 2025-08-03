@@ -13,7 +13,7 @@ import AnonymousFeedback from "./AnonymousFeedback";
 
 const WorkPlannerLayout = () => {
   const [activeTab, setActiveTab] = useState("home");
-  const [userRole, setUserRole] = useState<"worker" | "hr" | "manager">("worker");
+  const [userRole, setUserRole] = useState("worker");
   const [showAssistant, setShowAssistant] = useState(false);
 
   const navigation = [
@@ -50,7 +50,7 @@ const WorkPlannerLayout = () => {
                 <label className="block text-sm font-medium mb-2">Your Role</label>
                 <select 
                   value={userRole} 
-                  onChange={(e) => setUserRole(e.target.value as any)}
+                  onChange={(e) => setUserRole(e.target.value)}
                   className="w-full p-2 border rounded-lg"
                 >
                   <option value="worker">Worker</option>

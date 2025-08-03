@@ -4,22 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-interface MotivationPost {
-  id: string;
-  author: string;
-  message: string;
-  type: "goal" | "shoutout" | "motivation";
-  likes: number;
-  timestamp: Date;
-  department: string;
-}
+// MotivationPost structure: id, author, message, type, likes, timestamp, department
+// MotivationBoardProps: userRole
 
-interface MotivationBoardProps {
-  userRole: "worker" | "hr" | "manager";
-}
-
-const MotivationBoard = ({ userRole }: MotivationBoardProps) => {
-  const [posts] = useState<MotivationPost[]>([
+const MotivationBoard = ({ userRole }) => {
+  const [posts] = useState([
     {
       id: "1",
       author: "Sarah M.",
@@ -49,7 +38,7 @@ const MotivationBoard = ({ userRole }: MotivationBoardProps) => {
     }
   ]);
 
-  const getPostIcon = (type: string) => {
+  const getPostIcon = (type) => {
     switch (type) {
       case "goal":
         return <Trophy className="w-4 h-4 text-warning" />;
@@ -62,7 +51,7 @@ const MotivationBoard = ({ userRole }: MotivationBoardProps) => {
     }
   };
 
-  const getPostColor = (type: string) => {
+  const getPostColor = (type) => {
     switch (type) {
       case "goal":
         return "from-warning/10 to-warning/5 border-warning/20";
@@ -75,7 +64,7 @@ const MotivationBoard = ({ userRole }: MotivationBoardProps) => {
     }
   };
 
-  const formatTimeAgo = (date: Date) => {
+  const formatTimeAgo = (date) => {
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     

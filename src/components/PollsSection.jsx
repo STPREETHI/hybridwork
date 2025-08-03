@@ -5,28 +5,11 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
-interface Poll {
-  id: string;
-  title: string;
-  description: string;
-  createdBy: string;
-  createdAt: string;
-  expiresAt: string;
-  votes: {
-    up: number;
-    down: number;
-  };
-  userVote?: "up" | "down";
-  suggestion?: string;
-  voters: string[];
-}
+// Poll structure: id, title, description, createdBy, createdAt, expiresAt, votes, userVote, suggestion, voters
+// PollsSectionProps: userRole
 
-interface PollsSectionProps {
-  userRole: "worker" | "hr" | "manager";
-}
-
-const PollsSection = ({ userRole }: PollsSectionProps) => {
-  const [polls, setPolls] = useState<Poll[]>([
+const PollsSection = ({ userRole }) => {
+  const [polls, setPolls] = useState([
     {
       id: "1",
       title: "Should we all come in on Friday?",
@@ -57,7 +40,7 @@ const PollsSection = ({ userRole }: PollsSectionProps) => {
     description: "",
   });
 
-  const handleVote = (pollId: string, voteType: "up" | "down") => {
+  const handleVote = (pollId, voteType) => {
     setPolls(polls.map(poll => {
       if (poll.id === pollId) {
         const newVotes = { ...poll.votes };
@@ -83,7 +66,7 @@ const PollsSection = ({ userRole }: PollsSectionProps) => {
   const createPoll = () => {
     if (!newPoll.title.trim()) return;
     
-    const poll: Poll = {
+    const poll = {
       id: Date.now().toString(),
       title: newPoll.title,
       description: newPoll.description,
@@ -99,7 +82,7 @@ const PollsSection = ({ userRole }: PollsSectionProps) => {
     setShowCreatePoll(false);
   };
 
-  const getVotePercentage = (poll: Poll, type: "up" | "down") => {
+  const getVotePercentage = (poll, type) => {
     const total = poll.votes.up + poll.votes.down;
     if (total === 0) return 0;
     return (poll.votes[type] / total) * 100;

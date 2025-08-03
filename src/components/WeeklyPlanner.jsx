@@ -4,15 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-interface WeeklyPlannerProps {
-  userRole: "worker" | "hr" | "manager";
-}
+// WeeklyPlannerProps: userRole
+// WorkStatus options: "wfo", "wfh", "off"
 
-type WorkStatus = "wfo" | "wfh" | "off";
-
-const WeeklyPlanner = ({ userRole }: WeeklyPlannerProps) => {
+const WeeklyPlanner = ({ userRole }) => {
   const [currentWeek, setCurrentWeek] = useState(new Date());
-  const [weekSchedule, setWeekSchedule] = useState<Record<string, WorkStatus>>({
+  const [weekSchedule, setWeekSchedule] = useState({
     monday: "wfo",
     tuesday: "wfh",
     wednesday: "wfo",
@@ -38,10 +35,10 @@ const WeeklyPlanner = ({ userRole }: WeeklyPlannerProps) => {
     off: { label: "Day Off", icon: Calendar, color: "bg-off", textColor: "text-white" },
   };
 
-  const toggleDayStatus = (day: string) => {
+  const toggleDayStatus = (day) => {
     if (userRole !== "worker") return; // Only workers can modify their schedule
     
-    const statuses: WorkStatus[] = ["wfo", "wfh", "off"];
+    const statuses = ["wfo", "wfh", "off"];
     const currentIndex = statuses.indexOf(weekSchedule[day]);
     const nextIndex = (currentIndex + 1) % statuses.length;
     

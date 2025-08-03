@@ -4,20 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-interface AIAssistantProps {
-  onClose: () => void;
-  userRole: "worker" | "hr" | "manager";
-}
+// AIAssistantProps: onClose, userRole
+// Message structure: id, type, content, timestamp
 
-interface Message {
-  id: string;
-  type: "user" | "assistant";
-  content: string;
-  timestamp: Date;
-}
-
-const AIAssistant = ({ onClose, userRole }: AIAssistantProps) => {
-  const [messages, setMessages] = useState<Message[]>([
+const AIAssistant = ({ onClose, userRole }) => {
+  const [messages, setMessages] = useState([
     {
       id: "1",
       type: "assistant",
@@ -34,7 +25,7 @@ const AIAssistant = ({ onClose, userRole }: AIAssistantProps) => {
     { id: "features", label: "Platform features", icon: Lightbulb },
   ];
 
-  const getAIResponse = (userMessage: string): string => {
+  const getAIResponse = (userMessage) => {
     const message = userMessage.toLowerCase();
     
     if (message.includes("schedule") || message.includes("planner")) {
@@ -116,14 +107,14 @@ Try asking about any of these topics, or click one of the quick action buttons b
   const sendMessage = () => {
     if (!inputMessage.trim()) return;
     
-    const userMessage: Message = {
+    const userMessage = {
       id: Date.now().toString(),
       type: "user",
       content: inputMessage,
       timestamp: new Date(),
     };
     
-    const assistantResponse: Message = {
+    const assistantResponse = {
       id: (Date.now() + 1).toString(),
       type: "assistant",
       content: getAIResponse(inputMessage),
@@ -134,7 +125,7 @@ Try asking about any of these topics, or click one of the quick action buttons b
     setInputMessage("");
   };
 
-  const handleQuickAction = (actionId: string) => {
+  const handleQuickAction = (actionId) => {
     const actionMap = {
       schedule: "How do I set my weekly schedule?",
       team: "How can I view my team's availability?",
@@ -142,7 +133,7 @@ Try asking about any of these topics, or click one of the quick action buttons b
       features: "What features are available?",
     };
     
-    setInputMessage(actionMap[actionId as keyof typeof actionMap] || "");
+    setInputMessage(actionMap[actionId] || "");
   };
 
   return (

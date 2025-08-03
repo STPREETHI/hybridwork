@@ -2,16 +2,10 @@ import { useState, useEffect } from "react";
 import { Cloud, Sun, CloudRain, Thermometer } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
-interface WeatherData {
-  location: string;
-  temperature: number;
-  condition: string;
-  humidity: number;
-  windSpeed: number;
-}
+// WeatherData structure: location, temperature, condition, humidity, windSpeed
 
 const WeatherWidget = () => {
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,7 +33,7 @@ const WeatherWidget = () => {
     fetchWeather();
   }, []);
 
-  const getWeatherIcon = (condition: string) => {
+  const getWeatherIcon = (condition) => {
     if (condition.includes("rain") || condition.includes("Rain")) {
       return <CloudRain className="w-8 h-8 text-blue-medium" />;
     } else if (condition.includes("cloud") || condition.includes("Cloud")) {

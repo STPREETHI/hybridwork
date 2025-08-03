@@ -5,34 +5,15 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-interface TeamScheduleProps {
-  userRole: "worker" | "hr" | "manager";
-}
+// TeamScheduleProps: userRole
+// TeamMember structure: id, name, role, department, avatar, isOnline, schedule
 
-interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  department: string;
-  avatar: string;
-  isOnline: boolean;
-  schedule: {
-    monday: "wfo" | "wfh" | "off";
-    tuesday: "wfo" | "wfh" | "off";
-    wednesday: "wfo" | "wfh" | "off";
-    thursday: "wfo" | "wfh" | "off";
-    friday: "wfo" | "wfh" | "off";
-    saturday: "wfo" | "wfh" | "off";
-    sunday: "wfo" | "wfh" | "off";
-  };
-}
-
-const TeamSchedule = ({ userRole }: TeamScheduleProps) => {
+const TeamSchedule = ({ userRole }) => {
   const [selectedDepartment, setSelectedDepartment] = useState("all");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState("grid");
 
   // Mock team data
-  const teamMembers: TeamMember[] = [
+  const teamMembers = [
     {
       id: "1",
       name: "Sarah Chen",
@@ -106,7 +87,7 @@ const TeamSchedule = ({ userRole }: TeamScheduleProps) => {
   const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case "wfo": return "bg-wfo";
       case "wfh": return "bg-wfh";
@@ -115,7 +96,7 @@ const TeamSchedule = ({ userRole }: TeamScheduleProps) => {
     }
   };
 
-  const getStatusLabel = (status: string) => {
+  const getStatusLabel = (status) => {
     switch (status) {
       case "wfo": return "Office";
       case "wfh": return "Home";
@@ -124,8 +105,8 @@ const TeamSchedule = ({ userRole }: TeamScheduleProps) => {
     }
   };
 
-  const getDaySummary = (day: string) => {
-    const daySchedules = teamMembers.map(member => member.schedule[day as keyof typeof member.schedule]);
+  const getDaySummary = (day) => {
+    const daySchedules = teamMembers.map(member => member.schedule[day]);
     const wfoCount = daySchedules.filter(status => status === "wfo").length;
     const wfhCount = daySchedules.filter(status => status === "wfh").length;
     
@@ -244,7 +225,7 @@ const TeamSchedule = ({ userRole }: TeamScheduleProps) => {
             
             <div className="grid grid-cols-7 gap-1">
               {days.map((day, index) => {
-                const status = member.schedule[day as keyof typeof member.schedule];
+                const status = member.schedule[day];
                 return (
                   <div
                     key={day}
