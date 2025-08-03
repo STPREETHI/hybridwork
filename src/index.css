@@ -8,26 +8,26 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Work Planner Design System - Modern Indigo Theme */
-    --background: 218 27% 94%;
-    --foreground: 220 13% 18%;
+    /* HybridWork Design System - Blue & Pink Theme */
+    --background: 215 28% 97%;
+    --foreground: 215 25% 27%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
+    --card-foreground: 215 25% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
+    --popover-foreground: 215 25% 27%;
 
-    --primary: 220 83% 39%;
+    --primary: 213 94% 68%;  /* Beautiful Blue */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 213 93% 68%;
+    --secondary: 328 86% 70%;  /* Soft Pink */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 218 23% 92%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 213 27% 95%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 213 93% 68%;
+    --accent: 328 86% 70%;
     --accent-foreground: 0 0% 100%;
 
     --success: 142 71% 45%;
@@ -39,24 +39,39 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 87%;
-    --input: 220 13% 87%;
-    --ring: 220 83% 39%;
+    --border: 213 27% 90%;
+    --input: 213 27% 90%;
+    --ring: 213 94% 68%;
 
     /* Work Status Colors */
-    --wfo-color: 220 83% 39%;
-    --wfh-color: 142 71% 45%;
-    --off-color: 220 9% 46%;
+    --wfo-color: 213 94% 68%;  /* Blue for office */
+    --wfh-color: 142 71% 45%;  /* Green for home */
+    --off-color: 215 16% 47%;  /* Gray for off */
+
+    /* Theme Colors */
+    --blue-light: 213 100% 95%;
+    --blue-medium: 213 94% 68%;
+    --blue-dark: 213 87% 45%;
+    --pink-light: 328 100% 95%;
+    --pink-medium: 328 86% 70%;
+    --pink-dark: 328 78% 55%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220 83% 39%), hsl(213 93% 68%));
-    --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(160 84% 39%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(218 27% 98%));
+    --gradient-primary: linear-gradient(135deg, hsl(213 94% 68%), hsl(328 86% 70%));
+    --gradient-blue: linear-gradient(135deg, hsl(213 100% 95%), hsl(213 94% 68%));
+    --gradient-pink: linear-gradient(135deg, hsl(328 100% 95%), hsl(328 86% 70%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(213 27% 98%));
+    --gradient-hero: linear-gradient(135deg, hsl(213 94% 68%) 0%, hsl(328 86% 70%) 100%);
 
     /* Shadows */
-    --shadow-soft: 0 4px 6px -1px hsl(220 83% 39% / 0.1), 0 2px 4px -1px hsl(220 83% 39% / 0.06);
-    --shadow-medium: 0 10px 15px -3px hsl(220 83% 39% / 0.1), 0 4px 6px -2px hsl(220 83% 39% / 0.05);
-    --shadow-large: 0 20px 25px -5px hsl(220 83% 39% / 0.1), 0 10px 10px -5px hsl(220 83% 39% / 0.04);
+    --shadow-soft: 0 4px 6px -1px hsl(213 94% 68% / 0.1), 0 2px 4px -1px hsl(213 94% 68% / 0.06);
+    --shadow-medium: 0 10px 15px -3px hsl(213 94% 68% / 0.1), 0 4px 6px -2px hsl(213 94% 68% / 0.05);
+    --shadow-large: 0 20px 25px -5px hsl(213 94% 68% / 0.1), 0 10px 10px -5px hsl(213 94% 68% / 0.04);
+    --shadow-glow: 0 0 30px hsl(213 94% 68% / 0.3);
+
+    /* Animation Timings */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --radius: 0.5rem;
 

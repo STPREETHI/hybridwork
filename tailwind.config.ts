@@ -63,6 +63,12 @@ export default {
 				wfo: 'hsl(var(--wfo-color))',
 				wfh: 'hsl(var(--wfh-color))',
 				off: 'hsl(var(--off-color))',
+				'blue-light': 'hsl(var(--blue-light))',
+				'blue-medium': 'hsl(var(--blue-medium))',
+				'blue-dark': 'hsl(var(--blue-dark))',
+				'pink-light': 'hsl(var(--pink-light))',
+				'pink-medium': 'hsl(var(--pink-medium))',
+				'pink-dark': 'hsl(var(--pink-dark))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
