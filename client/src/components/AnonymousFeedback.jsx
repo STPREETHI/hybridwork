@@ -7,18 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { feedbackAPI } from "@/lib/api"; // Import your API utility
 
-// FeedbackItem structure: id, message, category, timestamp, status
-// AnonymousFeedbackProps: userRole
-
 const AnonymousFeedback = ({ userRole }) => {
   const [newFeedback, setNewFeedback] = useState("");
   const [category, setCategory] = useState("suggestion");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-
   const [feedbackItems, setFeedbackItems] = useState([]);
-  
-    // Fetch feedback if user is a manager or HR
+
+  // Fetch feedback if user is a manager or HR
   useEffect(() => {
     if (userRole === "hr" || userRole === "manager") {
       const fetchFeedback = async () => {
@@ -29,11 +25,16 @@ const AnonymousFeedback = ({ userRole }) => {
           }
         } catch (error) {
           console.error("Failed to fetch feedback:", error);
+          toast({
+            title: "Error",
+            description: "Could not fetch feedback.",
+            variant: "destructive",
+          });
         }
       };
       fetchFeedback();
     }
-  }, [userRole]);
+  }, [userRole, toast]);
 
   const handleSubmit = async () => {
     if (!newFeedback.trim()) return;
@@ -41,16 +42,22 @@ const AnonymousFeedback = ({ userRole }) => {
     setIsSubmitting(true);
     
     try {
+        // Use the API to submit feedback
         await feedbackAPI.submitFeedback({ message: newFeedback, category });
         toast({
             title: "Feedback Submitted",
             description: "Thank you for your anonymous feedback. We'll review it shortly.",
         });
         setNewFeedback("");
+        // Optionally, refetch feedback if the user is a manager/HR
+        if (userRole === "hr" || userRole === "manager") {
+            const response = await feedbackAPI.getFeedback();
+            if (response.success) setFeedbackItems(response.data);
+        }
     } catch (error) {
         toast({
             title: "Submission Failed",
-            description: "Could not submit your feedback. Please try again.",
+            description: error.message || "Could not submit your feedback. Please try again.",
             variant: "destructive",
         });
     } finally {
@@ -84,8 +91,9 @@ const AnonymousFeedback = ({ userRole }) => {
     }
   };
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', { 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric',
       hour: '2-digit',
@@ -146,7 +154,7 @@ const AnonymousFeedback = ({ userRole }) => {
           <h3 className="text-lg font-semibold text-foreground">Recent Feedback</h3>
           
           {feedbackItems.map((item) => (
-            <Card key={item.id} className="p-4 hover:shadow-md transition-all duration-300">
+            <Card key={item._id} className="p-4 hover:shadow-md transition-all duration-300">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -154,7 +162,7 @@ const AnonymousFeedback = ({ userRole }) => {
                       {item.category}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
-                      {formatDate(item.timestamp)}
+                      {formatDate(item.createdAt)}
                     </span>
                   </div>
                   

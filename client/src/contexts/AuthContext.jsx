@@ -33,7 +33,8 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
       if (token) {
-        apiClient.setToken(token);
+        // *** FIX: Set token in the API client on page load ***
+        apiClient.setToken(token); 
         try {
           const response = await authAPI.getCurrentUser();
           if (response.success) {
@@ -41,11 +42,13 @@ export const AuthProvider = ({ children }) => {
             initializeSocket(token);
           } else {
             localStorage.removeItem('token');
+            apiClient.setToken(null);
             dispatch({ type: 'SET_LOADING', payload: false });
           }
         } catch (error) {
           console.error('Auth check failed:', error);
           localStorage.removeItem('token');
+          apiClient.setToken(null);
           dispatch({ type: 'SET_LOADING', payload: false });
         }
       } else {
@@ -63,6 +66,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.login(credentials);
       
       if (response.success) {
+        // *** FIX: Set token in the API client after login ***
         apiClient.setToken(response.token);
         dispatch({ type: 'SET_USER', payload: response.user });
         initializeSocket(response.token);
@@ -85,6 +89,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.register(userData);
       
       if (response.success) {
+        // *** FIX: Set token in the API client after registration ***
         apiClient.setToken(response.token);
         dispatch({ type: 'SET_USER', payload: response.user });
         initializeSocket(response.token);
@@ -104,11 +109,11 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await authAPI.logout();
-      disconnectSocket();
-      dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if logout fails, clear local state
+    } finally {
+      // *** FIX: Always clear token on logout ***
+      apiClient.setToken(null);
       disconnectSocket();
       dispatch({ type: 'LOGOUT' });
     }
