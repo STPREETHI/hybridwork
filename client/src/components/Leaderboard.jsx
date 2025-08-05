@@ -1,59 +1,36 @@
+import { useState, useEffect } from "react"; // Import hooks
 import { Crown, TrendingUp, Calendar, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { analyticsAPI } from "@/lib/api"; // Import your API utility
 
 // LeaderboardEntry structure: id, name, department, officeAttendance, streak, avatar, rank
 // LeaderboardProps: userRole
 
 const Leaderboard = ({ userRole }) => {
-  const leaderboardData = [
-    {
-      id: "1",
-      name: "Alex Chen",
-      department: "Engineering",
-      officeAttendance: 92,
-      streak: 8,
-      avatar: "AC",
-      rank: 1
-    },
-    {
-      id: "2", 
-      name: "Sarah Wilson",
-      department: "Design",
-      officeAttendance: 88,
-      streak: 6,
-      avatar: "SW",
-      rank: 2
-    },
-    {
-      id: "3",
-      name: "Mike Rodriguez", 
-      department: "Marketing",
-      officeAttendance: 85,
-      streak: 5,
-      avatar: "MR",
-      rank: 3
-    },
-    {
-      id: "4",
-      name: "Emma Davis",
-      department: "Sales",
-      officeAttendance: 82,
-      streak: 4,
-      avatar: "ED",
-      rank: 4
-    },
-    {
-      id: "5",
-      name: "James Kim",
-      department: "Engineering", 
-      officeAttendance: 78,
-      streak: 3,
-      avatar: "JK",
-      rank: 5
-    }
-  ];
+  // State for leaderboard data and loading status
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch data from the API when the component mounts
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await analyticsAPI.getLeaderboard(); // Assumes a getLeaderboard function in analyticsAPI
+        if (response.success) {
+          setLeaderboardData(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch leaderboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
+
 
   const getRankBadge = (rank) => {
     switch (rank) {
@@ -81,6 +58,11 @@ const Leaderboard = ({ userRole }) => {
     if (percentage >= 60) return "text-warning";
     return "text-destructive";
   };
+  
+    if (loading) {
+    return <div className="p-6">Loading leaderboard...</div>;
+  }
+
 
   return (
     <div className="p-6 space-y-6">

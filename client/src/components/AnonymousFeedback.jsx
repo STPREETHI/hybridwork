@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageSquare, Send, Eye, AlertCircle, CheckCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { feedbackAPI } from "@/lib/api"; // Import your API utility
 
 // FeedbackItem structure: id, message, category, timestamp, status
 // AnonymousFeedbackProps: userRole
@@ -15,44 +16,46 @@ const AnonymousFeedback = ({ userRole }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const [feedbackItems] = useState([
-    {
-      id: "1",
-      message: "The coffee machine in the office needs to be refilled more frequently. It's often empty by noon.",
-      category: "concern",
-      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      status: "new"
-    },
-    {
-      id: "2",
-      message: "Love the new flexible seating arrangement! It makes collaboration much easier.",
-      category: "praise", 
-      timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-      status: "reviewed"
-    },
-    {
-      id: "3",
-      message: "Could we add more video conferencing rooms? Sometimes it's hard to find a quiet space for calls.",
-      category: "suggestion",
-      timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      status: "addressed"
+  const [feedbackItems, setFeedbackItems] = useState([]);
+  
+    // Fetch feedback if user is a manager or HR
+  useEffect(() => {
+    if (userRole === "hr" || userRole === "manager") {
+      const fetchFeedback = async () => {
+        try {
+          const response = await feedbackAPI.getFeedback();
+          if (response.success) {
+            setFeedbackItems(response.data);
+          }
+        } catch (error) {
+          console.error("Failed to fetch feedback:", error);
+        }
+      };
+      fetchFeedback();
     }
-  ]);
+  }, [userRole]);
 
   const handleSubmit = async () => {
     if (!newFeedback.trim()) return;
     
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Feedback Submitted",
-        description: "Thank you for your anonymous feedback. We'll review it shortly.",
-      });
-      setNewFeedback("");
-      setIsSubmitting(false);
-    }, 1000);
+    try {
+        await feedbackAPI.submitFeedback({ message: newFeedback, category });
+        toast({
+            title: "Feedback Submitted",
+            description: "Thank you for your anonymous feedback. We'll review it shortly.",
+        });
+        setNewFeedback("");
+    } catch (error) {
+        toast({
+            title: "Submission Failed",
+            description: "Could not submit your feedback. Please try again.",
+            variant: "destructive",
+        });
+    } finally {
+        setIsSubmitting(false);
+    }
   };
 
   const getCategoryColor = (category) => {
@@ -82,7 +85,7 @@ const AnonymousFeedback = ({ userRole }) => {
   };
 
   const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', { 
+    return new Date(date).toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric',
       hour: '2-digit',

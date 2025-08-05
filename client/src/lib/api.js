@@ -130,6 +130,21 @@ export const weatherAPI = {
   }
 };
 
+// --- NEWLY ADDED APIS ---
+
+// Analytics API for the Leaderboard
+export const analyticsAPI = {
+    getLeaderboard: () => apiClient.get('/analytics/leaderboard'),
+};
+
+// Feedback API for the Anonymous Feedback component
+export const feedbackAPI = {
+    getFeedback: () => apiClient.get('/feedback'),
+    submitFeedback: (feedbackData) => apiClient.post('/feedback', feedbackData),
+};
+
+// --- END OF NEWLY ADDED APIS ---
+
 // Export the API client for token management
 export { apiClient };
 
